@@ -29,6 +29,24 @@ class App extends Component {
     console.log("currentScreen: " + this.state.currentScreen);
   }
 
+  deleteItem = (key) => {
+    //this.setState({ currentList: [...this.state.currentList.items.filter(i => i.key !== key)]});
+    this.state.currentList.items = this.state.currentList.items.filter(i => i.key != key);
+    this.loadList(this.state.currentList);
+  }
+
+  deleteList = (key) => {
+    this.setState({ todoLists: [...this.state.todoLists.filter(i => i.key !== key)]});
+  }
+
+  setListName = (value) =>{
+    this.props.todoList.name = value;
+  }
+
+  setListOwner = (value) =>{
+    this.props.todoList.owner = value;
+  }
+
   render() {
     switch(this.state.currentScreen) {
       case AppScreen.HOME_SCREEN:
@@ -38,7 +56,11 @@ class App extends Component {
       case AppScreen.LIST_SCREEN:            
         return <ListScreen
           goHome={this.goHome.bind(this)}
-          todoList={this.state.currentList} />;
+          todoList={this.state.currentList} 
+          setListName={this.setListName}
+          setListOwner={this.setListOwner}
+          deleteItem={this.deleteItem}
+          deleteList={this.deleteList}/>;
       case AppScreen.ITEM_SCREEN:
         return <ItemScreen />;
       default:

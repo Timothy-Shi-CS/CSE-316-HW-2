@@ -23,24 +23,26 @@ export class ListScreen extends Component {
         return (
             <div id="todo_list">
                 <ListHeading goHome={this.props.goHome} />
-                <ListTrash />
+                <ListTrash listKey={this.props.todoList.key} deleteList={this.props.deleteList}/>
                 <div id="list_details_container">
                     <div id="list_details_name_container" className="text_toolbar">
                         <span id="list_name_prompt">Name:</span>
                         <input 
-                            value={this.getListName()} 
+                            onChange={this.props.setListName.bind(this, this.getListName())} 
+                            defaultValue={this.getListName()} 
                             type="text" 
                             id="list_name_textfield" />
                     </div>
                     <div id="list_details_owner_container" className="text_toolbar">
                         <span id="list_owner_prompt">Owner:</span>
                         <input 
-                            value={this.getListOwner()}
+                            onChange={this.props.setListOwner.bind(this, this.getListOwner())}
+                            defaultValue={this.getListOwner()}
                             type="text" 
                             id="list_owner_textfield" />
                     </div>
                 </div>
-                <ListItemsTable todoList={this.props.todoList} />
+                <ListItemsTable todoList={this.props.todoList} deleteItem ={this.props.deleteItem}/>
             </div>
         )
     }
