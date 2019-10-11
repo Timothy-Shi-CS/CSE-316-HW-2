@@ -189,15 +189,21 @@ font-size: 16pt;
   justify-content: center;
   padding: 1rem;
   background: var(--black);
+  background-color: lightgray;
+  height: 200px;
+  width: 50%;
+  transform: translate(50%, 50%);
   cursor: pointer;
-  visibility: hidden;
+  visibility: visible;
   opacity: 0;
+  z-index: -1;
   transition: all 0.35s ease-in;
 }
 
 .modal.is_visible {
   visibility: visible;
   opacity: 1;
+  z-index: 1;
 }
 
 .modal_dialog {

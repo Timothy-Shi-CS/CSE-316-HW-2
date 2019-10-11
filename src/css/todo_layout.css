@@ -50,6 +50,7 @@ body {
   width: 15%;
   text-align: right;
   top: 5%;
+  z-index: 100;
 }
 #list_details_container {
   padding-left: 2%;
