@@ -26,7 +26,7 @@ export class ItemScreen extends Component {
 
     changeCompleted = (e) =>{
         //this.props.item.completed = e.target.value;
-        this.setState({completed: e.target.value});
+        this.setState({completed: e.target.checked});
     }
 /*
     changeItem = (i) =>{
@@ -57,7 +57,7 @@ export class ItemScreen extends Component {
                         </div>
                         <div>
                             <span>Completed:</span>
-                            <input type="checkbox" name="completed" defaultValue={this.state.completed} onChange={this.changeCompleted}/>
+                            <input type="checkbox" name="completed" defaultChecked={this.state.completed} onChange={this.changeCompleted}/>
                         </div>
                     </form>
                 <button onClick = {this.props.edit == false ? this.props.newItem.bind(this, this.state.description, this.state.assignedTo, this.state.dueDate, this.state.completed): this.props.changeItem.bind(this, this.state.description, this.state.assignedTo, this.state.dueDate, this.state.completed, this.props.item)}>Submit</button>

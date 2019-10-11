@@ -17,7 +17,9 @@ class App extends Component {
     todoLists: testTodoListData.todoLists,
     currentList: null,
     item: null,
-    edit: false
+    edit: false,
+    sortTaskReverse: false,
+    sortDueDateReverse: false
   }
 
   goHome = () => {
@@ -83,7 +85,8 @@ class App extends Component {
     console.log("currentScreen: " + this.state.currentScreen);
   }
 
-  deleteItem = (key) => {
+  deleteItem = (key, e) => {
+    e.stopPropagation();
     //this.setState({ currentList: [...this.state.currentList.items.filter(i => i.key !== key)]});
     this.state.currentList.items = this.state.currentList.items.filter(i => i.key !== key);
     this.loadList(this.state.currentList);
@@ -132,9 +135,81 @@ class App extends Component {
       }
     }
   }
-  sortTasks = () =>{
-    for (var i = 0; i<this.state.currentList.items.length; i++){}
+  sortTask = () =>{
+    if (this.state.sortTaskReverse == false){
+      this.state.currentList.items.sort(function(a, b){
+        if (a.description < b.description) {return -1;}
+        if (a.description > b.description) {return 1;}
+        return 0;
+      })
+      this.setState({sortTaskReverse: true});
+    }
+    else{
+      this.state.currentList.items.sort(function(a, b){
+        if (a.description < b.description) {return 1;}
+        if (a.description > b.description) {return -1;}
+        return 0;
+      })
+      this.setState({sortTaskReverse: false});
+    }
+    var i = 0;
+    this.state.currentList.items.map(item=>{
+      item.key = i;
+      i++;
+    })
+    this.loadList(this.state.currentList);
   }
+
+  sortDueDate = () =>{
+    if (this.state.sortDueDateReverse == false){
+      this.state.currentList.items.sort(function(a, b){
+        if (a.due_date < b.due_date) {return -1;}
+        if (a.due_date > b.due_date) {return 1;}
+        return 0;
+      })
+      this.setState({sortDueDateReverse: true});
+    }
+    else{
+      this.state.currentList.items.sort(function(a, b){
+        if (a.due_date < b.due_date) {return 1;}
+        if (a.due_date > b.due_date) {return -1;}
+        return 0;
+      })
+      this.setState({sortDueDateReverse: false});
+    }
+    var i = 0;
+    this.state.currentList.items.map(item=>{
+      item.key = i;
+      i++;
+    })
+    this.loadList(this.state.currentList);
+  }
+
+  sortStatus = () =>{
+    if (this.state.sortDueDateReverse == false){
+      this.state.currentList.items.sort(function(a, b){
+        if (a.completed < b.completed) {return -1;}
+        if (a.completed > b.completed) {return 1;}
+        return 0;
+      })
+      this.setState({sortDueDateReverse: true});
+    }
+    else{
+      this.state.currentList.items.sort(function(a, b){
+        if (a.completed < b.completed) {return 1;}
+        if (a.completed > b.completed) {return -1;}
+        return 0;
+      })
+      this.setState({sortDueDateReverse: false});
+    }
+    var i = 0;
+    this.state.currentList.items.map(item=>{
+      item.key = i;
+      i++;
+    })
+    this.loadList(this.state.currentList);
+  }
+  
   cancelItem = () =>{
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
   }
@@ -156,7 +231,9 @@ class App extends Component {
           deleteList={this.deleteList}
           moveItemDown={this.moveItemDown} 
           moveItemUp={this.moveItemUp}
-          sortTasks={this.sortTasks}
+          sortTask={this.sortTask}
+          sortDueDate = {this.sortDueDate}
+          sortStatus = {this.sortStatus}
           goItemList = {this.goItemList}
           editItem = {this.editItem}
           />;

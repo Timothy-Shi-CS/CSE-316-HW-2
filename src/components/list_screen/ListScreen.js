@@ -64,7 +64,9 @@ export class ListScreen extends Component {
                 goItemList={this.props.goItemList} 
                 todoList={this.props.todoList} 
                 deleteItem ={this.props.deleteItem}
-                sortTasks = {this.props.sortTask}
+                sortTask = {this.props.sortTask}
+                sortDueDate = {this.props.sortDueDate}
+                sortStatus = {this.props.sortStatus}
                 editItem = {this.props.editItem}
                 />
                     <div id = "deleteList" className = {visibleModal}>
