@@ -87,14 +87,22 @@ class App extends Component {
 
   deleteItem = (key, e) => {
     e.stopPropagation();
-    //this.setState({ currentList: [...this.state.currentList.items.filter(i => i.key !== key)]});
     this.state.currentList.items = this.state.currentList.items.filter(i => i.key !== key);
+    var i = 0;
+    this.state.currentList.items.map(item=>{
+      item.key = i;
+      i++;
+    })
     this.loadList(this.state.currentList);
   }
 
   deleteList = (key) => {
-    //this.state.todoLists = this.state.todoLists.filter(i => i.key !== key);
-    this.setState({ todoLists: [...this.state.todoLists.filter(i => i.key !== key)]});
+    this.state.todoLists = this.state.todoLists.filter(i => i.key !== key);
+    var i = 0;
+    this.state.todoLists.map(item=>{
+      item.key = i;
+      i++;
+    })
     this.setState({currentScreen: AppScreen.HOME_SCREEN});
   }
 

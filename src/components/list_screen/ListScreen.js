@@ -69,13 +69,13 @@ export class ListScreen extends Component {
                 sortStatus = {this.props.sortStatus}
                 editItem = {this.props.editItem}
                 />
-                    <div id = "deleteList" className = {visibleModal}>
-                        <h3>Delete list?</h3>
-                        <p> Are you sure you want to delete this list?</p>
-                        <button onClick = {this.props.deleteList.bind(this, this.props.todoList.key)}>Yes</button>
-                        <button onClick = {this.hideTrashScreen}>No</button>
-                        <p>The list will not be retrievable</p>
-                    </div>
+                <div id = "deleteList" className = {visibleModal} data-animation="slideInOutLeft">
+                    <h2>Delete list?</h2>
+                    <p> Are you sure you want to delete this list?</p>
+                    <button onClick = {this.props.deleteList.bind(this, this.props.todoList.key)}>Yes</button>
+                    <button onClick = {this.hideTrashScreen}>No</button>
+                    <p>The list will not be retrievable</p>
+                </div>
             </div>
             
         )

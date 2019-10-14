@@ -1,3 +1,5 @@
+@import url("./fonts/Lexend Exa/css.css");
+
 :root {
   /* 
       FIRST WE'LL DEFINE OUR SWATCHES, i.e. THE COMPLEMENTARY
@@ -184,12 +186,11 @@ font-size: 16pt;
   left: 0;
   right: 0;
   bottom: 0;
-  display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
   background: var(--black);
-  background-color: lightgray;
+  background-color: var(--swatch-complement);
   height: 200px;
   width: 50%;
   transform: translate(50%, 50%);

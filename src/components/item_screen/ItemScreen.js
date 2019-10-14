@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import ListItemCard from '../list_screen/ListItemCard';
 
 export class ItemScreen extends Component {
     state ={
@@ -10,33 +9,20 @@ export class ItemScreen extends Component {
         completed: this.props.item.completed
     }
     changeDescription = (e) =>{
-        //this.props.item.description = e.target.value;
         this.setState({description: e.target.value});
     }
 
     changeAssignedTo = (e) =>{
-        //this.props.item.assigned_to = e.target.value;
         this.setState({assignedTo: e.target.value});
     }
 
     changeDueDate = (e) =>{
-        //this.props.item.due_date = e.target.value;
         this.setState({dueDate: e.target.value});
     }
 
     changeCompleted = (e) =>{
-        //this.props.item.completed = e.target.value;
         this.setState({completed: e.target.checked});
     }
-/*
-    changeItem = (i) =>{
-        i = {
-            description: this.state.description,
-            assignedTo: this.state.assignedTo,
-            dueDate: this.state.dueDate,
-            completed: this.state.completed
-        }
-    }*/
 
     render() {
         return (

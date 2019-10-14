@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import delItem from './Close.png'
+import delItem from './RemoveItem.png'
 import moveUp from './MoveUp.png'
 import moveDown from './MoveDown.png'
 
