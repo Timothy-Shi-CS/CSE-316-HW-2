@@ -3,7 +3,14 @@ import testTodoListData from './TestTodoListData.json'
 import HomeScreen from './components/home_screen/HomeScreen'
 import ItemScreen from './components/item_screen/ItemScreen'
 import ListScreen from './components/list_screen/ListScreen'
+import jsTPS from './components/transactions/jsTPS'
 import { throwStatement } from '@babel/types';
+import ListItemRemovalTransaction from './components/transactions/ListItemRemovalTransaction.js';
+import ListNameChangeTransaction from './components/transactions/ListNameChangeTransaction.js';
+import OwnerNameChangeTransaction from './components/transactions/OwnerNameChangeTransaction.js';
+import ListItemMoveUpTransaction from './components/transactions/ListItemMoveUpTransaction.js';
+import ListItemMoveDownTransaction from './components/transactions/ListItemMoveDownTransaction.js';
+import ListItemEditTransaction from './components/transactions/ListItemEditTransaction.js';
 
 const AppScreen = {
   HOME_SCREEN: "HOME_SCREEN",
@@ -19,7 +26,8 @@ class App extends Component {
     item: null,
     edit: false,
     sortTaskReverse: false,
-    sortDueDateReverse: false
+    sortDueDateReverse: false,
+    tps: new jsTPS()
   }
 
   goHome = () => {
@@ -69,10 +77,8 @@ class App extends Component {
   }
 
   changeItem = (a, b, c, d ,k) =>{
-    this.state.currentList.items[k.key].description = a;
-    this.state.currentList.items[k.key].due_date = c;
-    this.state.currentList.items[k.key].assigned_to = b;
-    this.state.currentList.items[k.key].completed = d;
+    var y = new ListItemEditTransaction(a, b, c, d, k, this.state.currentList.items[k.key].description, this.state.currentList.items[k.key].assigned_to,this.state.currentList.items[k.key].due_date,this.state.currentList.items[k.key].completed);
+    this.state.tps.addTransaction(y);
     this.loadList(this.state.currentList);
     this.setState({item: null});
     this.setState({edit: false});
@@ -87,12 +93,8 @@ class App extends Component {
 
   deleteItem = (key, e) => {
     e.stopPropagation();
-    this.state.currentList.items = this.state.currentList.items.filter(i => i.key !== key);
-    var i = 0;
-    this.state.currentList.items.map(item=>{
-      item.key = i;
-      i++;
-    })
+    var b = new ListItemRemovalTransaction(this.state.currentList, this.state.currentList.items[key]);
+    this.state.tps.addTransaction(b);
     this.loadList(this.state.currentList);
   }
 
@@ -107,40 +109,32 @@ class App extends Component {
   }
 
   setListName = (e) =>{
-    this.state.currentList.name = e.target.value;
+    var b = new ListNameChangeTransaction(this.state.currentList, this.state.currentList.name, e.target.value);
+    this.state.tps.addTransaction(b);
+    this.loadList(this.state.currentList);
   }
 
   setListOwner = (e) =>{
-    this.state.currentList.owner = e.target.value;
+    var b = new OwnerNameChangeTransaction(this.state.currentList, this.state.currentList.owner, e.target.value);
+    this.state.tps.addTransaction(b);
+    this.loadList(this.state.currentList);
   }
   moveItemDown = (i, e) =>{
     e.stopPropagation();
-    for (var j = 0; j<this.state.currentList.items.length - 1; j++){
-      if (this.state.currentList.items[j].key == i){
-        let x = this.state.currentList.items[j];
-        let y = this.state.currentList.items[Number(j)+1];
-        this.state.currentList.items[j] = y;
-        this.state.currentList.items[Number(j)+1] = x;
-        this.state.currentList.items[j].key = j;
-        this.state.currentList.items[Number(j)+1].key = j+1;
-        this.loadList(this.state.currentList);
-        break;
-      }
+    if (i < this.state.currentList.items.length-1){
+      var b = new ListItemMoveDownTransaction(this.state.currentList, this.state.currentList.items[i]);
+      console.log(b);
+      this.state.tps.addTransaction(b);
+      this.loadList(this.state.currentList);
     }
   }
   moveItemUp = (i, e) =>{
     e.stopPropagation();
-    for (var j = 1; j<this.state.currentList.items.length; j++){
-      if (this.state.currentList.items[j].key == i){
-        let x = this.state.currentList.items[j];
-        let y = this.state.currentList.items[Number(j)-1];
-        this.state.currentList.items[j] = y;
-        this.state.currentList.items[Number(j)-1] = x;
-        this.state.currentList.items[j].key = j;
-        this.state.currentList.items[Number(j)-1].key = j-1;
-        this.loadList(this.state.currentList);
-        break;
-      }
+    if (i > 0){
+      var b = new ListItemMoveUpTransaction(this.state.currentList, this.state.currentList.items[i]);
+      console.log(b);
+      this.state.tps.addTransaction(b);
+      this.loadList(this.state.currentList);
     }
   }
   sortTask = () =>{
@@ -222,7 +216,21 @@ class App extends Component {
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
   }
 
+  handleUndoRedo=(e)=>{
+    if (this.state.currentScreen == AppScreen.LIST_SCREEN){
+      if(e.ctrlKey&&String.fromCharCode(e.which).toLowerCase()==='z'&&this.state.tps.peekUndo!==null){
+        this.state.tps.undoTransaction();
+        this.loadList(this.state.currentList);
+      }
+      else if (e.ctrlKey&&String.fromCharCode(e.which).toLowerCase()==='y'&&this.state.tps.peekDo!==null){
+        this.state.tps.doTransaction();
+        this.loadList(this.state.currentList);
+      }
+    }
+  }
+
   render() {
+    document.addEventListener('keydown', this.handleUndoRedo);
     switch(this.state.currentScreen) {
       case AppScreen.HOME_SCREEN:
         return <HomeScreen 

@@ -42,7 +42,8 @@ export class ListScreen extends Component {
                         <span id="list_name_prompt">Name:</span>
                         <input 
                             onChange={this.props.setListName}
-                            defaultValue={this.getListName()} 
+                            //onKeyPress={this.props.setListName}
+                            value={this.getListName()} 
                             type="text" 
                             id="list_name_textfield" 
                         />
@@ -51,7 +52,7 @@ export class ListScreen extends Component {
                         <span id="list_owner_prompt">Owner:</span>
                         <input 
                             onChange={this.props.setListOwner}
-                            defaultValue={this.getListOwner()}
+                            value={this.getListOwner()}
                             type="text" 
                             id="list_owner_textfield" 
                         />
