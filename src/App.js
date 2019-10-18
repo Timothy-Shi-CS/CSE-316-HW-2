@@ -27,6 +27,7 @@ class App extends Component {
     edit: false,
     sortTaskReverse: false,
     sortDueDateReverse: false,
+    sortStatusReverse: false,
     tps: new jsTPS()
   }
 
@@ -188,13 +189,13 @@ class App extends Component {
   }
 
   sortStatus = () =>{
-    if (this.state.sortDueDateReverse == false){
+    if (this.state.sortStatusReverse == false){
       this.state.currentList.items.sort(function(a, b){
         if (a.completed < b.completed) {return -1;}
         if (a.completed > b.completed) {return 1;}
         return 0;
       })
-      this.setState({sortDueDateReverse: true});
+      this.setState({sortStatusReverse: true});
     }
     else{
       this.state.currentList.items.sort(function(a, b){
@@ -202,7 +203,7 @@ class App extends Component {
         if (a.completed > b.completed) {return -1;}
         return 0;
       })
-      this.setState({sortDueDateReverse: false});
+      this.setState({sortStatusReverse: false});
     }
     var i = 0;
     this.state.currentList.items.map(item=>{

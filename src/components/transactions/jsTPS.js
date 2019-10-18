@@ -98,7 +98,7 @@ export class jsTPS extends Component{
      */
     peekUndo() {
         if (this.hasTransactionToUndo()) {
-            return this.transactions.get(this.mostRecentTransaction);
+            return this.transactions[this.state.mostRecentTransaction];
         }
         else
             return null;
@@ -113,7 +113,7 @@ export class jsTPS extends Component{
      */    
     peekDo() {
         if (this.hasTransactionToRedo()) {
-            return this.transactions.get(this.state.mostRecentTransaction+1);
+            return this.transactions[this.state.mostRecentTransaction+1];
         }
         else
             return null;
@@ -140,7 +140,7 @@ export class jsTPS extends Component{
      */
     clearAllTransactions() {
         // REMOVE ALL THE TRANSACTIONS
-        this.transactions.clear();
+        this.transactions = [];
         
         // MAKE SURE TO RESET THE LOCATION OF THE
         // TOP OF THE TPS STACK TOO
@@ -155,7 +155,7 @@ export class jsTPS extends Component{
      * @return The number of transactions currently in the transaction stack.
      */
     getSize() {
-        return this.transactions.size();
+        return this.transactions.length;
     }
     
     /**
@@ -208,11 +208,11 @@ export class jsTPS extends Component{
      * @return A textual summary of the TPS.
      */
     toString() {
-        var text = "--Number of Transactions: " + this.transactions.size() + "\n";
+        var text = "--Number of Transactions: " + this.transactions.length + "\n";
         text += "--Current Index on Stack: " + this.state.mostRecentTransaction + "\n";
         text += "--Current Transaction Stack:\n";
         for (var i = 0; i <= this.state.mostRecentTransaction; i++) {
-            var jT = this.transactions.get(i);
+            var jT = this.transactions[i];
             text += "----" + jT.toString() + "\n";
         }
         return text;

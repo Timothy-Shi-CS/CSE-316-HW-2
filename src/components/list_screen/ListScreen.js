@@ -42,7 +42,6 @@ export class ListScreen extends Component {
                         <span id="list_name_prompt">Name:</span>
                         <input 
                             onChange={this.props.setListName}
-                            //onKeyPress={this.props.setListName}
                             value={this.getListName()} 
                             type="text" 
                             id="list_name_textfield" 
