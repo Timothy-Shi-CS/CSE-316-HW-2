@@ -11,6 +11,9 @@ import OwnerNameChangeTransaction from './components/transactions/OwnerNameChang
 import ListItemMoveUpTransaction from './components/transactions/ListItemMoveUpTransaction.js';
 import ListItemMoveDownTransaction from './components/transactions/ListItemMoveDownTransaction.js';
 import ListItemEditTransaction from './components/transactions/ListItemEditTransaction.js';
+import SortTaskTransaction from './components/transactions/SortTaskTransaction.js';
+import SortDueDateTransaction from './components/transactions/SortDueDateTransaction.js';
+import SortStatusTransaction from './components/transactions/SortStatusTransaction.js';
 
 const AppScreen = {
   HOME_SCREEN: "HOME_SCREEN",
@@ -139,77 +142,23 @@ class App extends Component {
     }
   }
   sortTask = () =>{
-    if (this.state.sortTaskReverse == false){
-      this.state.currentList.items.sort(function(a, b){
-        if (a.description < b.description) {return -1;}
-        if (a.description > b.description) {return 1;}
-        return 0;
-      })
-      this.setState({sortTaskReverse: true});
-    }
-    else{
-      this.state.currentList.items.sort(function(a, b){
-        if (a.description < b.description) {return 1;}
-        if (a.description > b.description) {return -1;}
-        return 0;
-      })
-      this.setState({sortTaskReverse: false});
-    }
-    var i = 0;
-    this.state.currentList.items.map(item=>{
-      item.key = i;
-      i++;
-    })
+    var b = new SortTaskTransaction(this.state.sortTaskReverse, this.state.currentList);
+    this.state.tps.addTransaction(b);
+    this.setState({sortTaskReverse: b.reverse});
     this.loadList(this.state.currentList);
   }
 
   sortDueDate = () =>{
-    if (this.state.sortDueDateReverse == false){
-      this.state.currentList.items.sort(function(a, b){
-        if (a.due_date < b.due_date) {return -1;}
-        if (a.due_date > b.due_date) {return 1;}
-        return 0;
-      })
-      this.setState({sortDueDateReverse: true});
-    }
-    else{
-      this.state.currentList.items.sort(function(a, b){
-        if (a.due_date < b.due_date) {return 1;}
-        if (a.due_date > b.due_date) {return -1;}
-        return 0;
-      })
-      this.setState({sortDueDateReverse: false});
-    }
-    var i = 0;
-    this.state.currentList.items.map(item=>{
-      item.key = i;
-      i++;
-    })
+    var b = new SortDueDateTransaction(this.state.sortDueDateReverse, this.state.currentList);
+    this.state.tps.addTransaction(b);
+    this.setState({sortDueDateReverse: b.reverse});
     this.loadList(this.state.currentList);
   }
 
   sortStatus = () =>{
-    if (this.state.sortStatusReverse == false){
-      this.state.currentList.items.sort(function(a, b){
-        if (a.completed < b.completed) {return -1;}
-        if (a.completed > b.completed) {return 1;}
-        return 0;
-      })
-      this.setState({sortStatusReverse: true});
-    }
-    else{
-      this.state.currentList.items.sort(function(a, b){
-        if (a.completed < b.completed) {return 1;}
-        if (a.completed > b.completed) {return -1;}
-        return 0;
-      })
-      this.setState({sortStatusReverse: false});
-    }
-    var i = 0;
-    this.state.currentList.items.map(item=>{
-      item.key = i;
-      i++;
-    })
+    var b = new SortStatusTransaction(this.state.sortStatusReverse, this.state.currentList);
+    this.state.tps.addTransaction(b);
+    this.setState({sortStatusReverse: b.reverse});
     this.loadList(this.state.currentList);
   }
   
@@ -221,10 +170,12 @@ class App extends Component {
     if (this.state.currentScreen == AppScreen.LIST_SCREEN){
       if(e.ctrlKey&&String.fromCharCode(e.which).toLowerCase()==='z'&&this.state.tps.peekUndo!==null){
         this.state.tps.undoTransaction();
+        console.log(this.state.currentList);
         this.loadList(this.state.currentList);
       }
       else if (e.ctrlKey&&String.fromCharCode(e.which).toLowerCase()==='y'&&this.state.tps.peekDo!==null){
         this.state.tps.doTransaction();
+        console.log(this.state.currentList);
         this.loadList(this.state.currentList);
       }
     }
