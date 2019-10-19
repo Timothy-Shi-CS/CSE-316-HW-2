@@ -14,6 +14,7 @@ import ListItemEditTransaction from './components/transactions/ListItemEditTrans
 import SortTaskTransaction from './components/transactions/SortTaskTransaction.js';
 import SortDueDateTransaction from './components/transactions/SortDueDateTransaction.js';
 import SortStatusTransaction from './components/transactions/SortStatusTransaction.js';
+import AddListItemTransaction from './components/transactions/AddListItemTransaction.js';
 
 const AppScreen = {
   HOME_SCREEN: "HOME_SCREEN",
@@ -67,15 +68,8 @@ class App extends Component {
     this.setState({currentScreen: AppScreen.ITEM_SCREEN});
   }
   newItem = (a, b, c, d) => {
-    let newItemKey = this.state.currentList.items.length;
-    let newItem = {
-      key: newItemKey,
-      description: a,
-      due_date: c,
-      assigned_to: b,
-      completed: d
-    }
-    this.state.currentList.items.push(newItem);
+    var y = new AddListItemTransaction(a, b, c, d, this.state.currentList);
+    this.state.tps.addTransaction(y);
     this.loadList(this.state.currentList);
     this.setState({item: null});
     this.setState({edit: false});
