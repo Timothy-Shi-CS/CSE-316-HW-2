@@ -36,6 +36,7 @@ class App extends Component {
 
   goHome = () => {
     this.setState({currentScreen: AppScreen.HOME_SCREEN});
+    this.state.tps.clearAllTransactions();
     this.setState({currentList: null});
   }
   goList = () => {
